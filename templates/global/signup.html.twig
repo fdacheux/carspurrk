@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Registration page{% endblock %}
+
+{% block myTitle %}Signup{% endblock %}
+
+{% block body %}
+
+    {{ form_start(form) }}
+        {{form_widget(form)}}
+        <input type="submit" value="Sign up" class="btn btn-primary">
+    {{ form_end(form) }}
+
+{% endblock %}

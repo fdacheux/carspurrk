@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Car edit{% endblock %}
+{% block myTitle %}Car {{car.numberPlate}}{% endblock %}
+
+{% block body %}
+{{form_start(form)}}
+    {{form_widget(form)}}
+    <a href="{{path('admin')}}" class="btn btn-dark">Back</a>
+    <input type="submit" value="Save" class="btn btn-success">
+{{form_end(form)}}
+{% endblock %}

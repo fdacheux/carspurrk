@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cars list{% endblock %}
+
+{% block myTitle %}Cars list{% endblock %}
+
+{% block body %}
+
+{% for message in app.flashes('success') %}
+    <div class="alert alert-success">{{ message }}</div>
+{% endfor %}
+
+{{form_start(form)}}
+<div class="row no-gutters align-items-center text-center">
+    <div class="col">
+        {{form_row(form.minYear)}}
+    </div>
+    <div class="col">
+        {{form_row(form.maxYear)}}
+    </div>
+    <div class="col-2">
+        <input type="submit" value="Search" class="btn btn-info text-white">
+    </div>
+</div>
+{{form_end(form)}}
+                         
+    {% if admin %}       
+        <a href="{{ path('carAdd')}}" class="d-block btn btn-success mb-1">Add</a>
+    {% endif %}
+    <div class="row no-gutters">
+        {% for car in cars %}
+            <div class="col-12 col-lg-6 p-1">
+                <div class="card mb-3">
+                    <div class="row no-gutters align-items-center p-2">
+                        <div class="col-12 col-md-4">
+                            <img src="{{ asset('images/' ~ car.model.image  ) }}" alt="" class="card-img">
+                        </div>
+                        <div class="col">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ car.numberPlate }}</h5>
+                                <p class="card-text">
+                                    <div>Brand : {{ car.model.brand.fieldName }}</div>
+                                    <div>Model : {{ car.model.fieldName }} - AP : {{ car.model.averagePrice }}$</div>
+                                    <div>Doors number : {{ car.doorsNumber }}</div>
+                                    <div>Year : {{ car.year }}</div>
+                                    
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                        {% if admin %}
+                            <div class="btn-group">
+                                <a href="{{path('carEdit', {'id': car.id})}}" class="btn btn-warning rounded px-0">Edit</a>
+                                <form onSubmit="return confirm('Do you really want to delete this car ?')" method="POST" class="col" data: {turbo: false} action="{{path('carDelete', {'id': car.id})}}" >
+                                    <input type="hidden" name="_method" value="deletion">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ car.id) }}">
+                                    <button class="btn btn-danger w-100" type="submit">Delete</button>
+                                </form>
+                            </div>
+                        {% endif %}
+                </div>
+            </div>
+
+        {% endfor %}
+    </div>
+    <div class="navigation">
+        {{ knp_pagination_render(cars) }}
+    </div>
+{% endblock %}
